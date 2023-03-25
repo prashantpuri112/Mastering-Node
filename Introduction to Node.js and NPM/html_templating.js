@@ -30,10 +30,12 @@ const dataObj = JSON.parse(data); // convert the data to a javascript object
 
 
 const server = http.createServer((req, res) => {  // request, response
-    const pathName = req.url;
+
+    const { query, pathname } = url.parse(req.url, true) // parse the url to an object
+
 
     // Overview page
-    if (pathName === '/' || pathName === '/overview') {
+    if (pathname === '/' || pathname === '/overview') {
         res.writeHead(200, { 'content-type': 'text/html' });
 
         const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el)).join(''); // join the array to a string
@@ -42,12 +44,15 @@ const server = http.createServer((req, res) => {  // request, response
 
         //Product page
     }
-    else if (pathName === '/product') {
-        res.end('This is the PRODUCT');
+    else if (pathname === '/product') {
+        res.writeHead(200, { 'content-type': 'text/html' });
+        const product = dataObj[query.id];
+        const output = replaceTemplate(tempProduct, product);
+        res.end(output);
     }
 
     //API
-    else if (pathName === '/api') {
+    else if (pathname === '/api') {
 
         res.writeHead(200, { 'content-type': 'application/json' }); // set the header to json
         res.end(data); // send the data to the client
