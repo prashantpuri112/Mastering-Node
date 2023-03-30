@@ -1,10 +1,16 @@
 const fs = require('fs');
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
+
+// 1) MIDDLEWARE
+app.use(morgan('tiny')); // middleware to log the requests in the console
 
 app.use(express.json()); // middleware to parse the body of the request
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`), 'utf-8'); // read the file and store it in a variable
+
+// 2) ROUTE HANDLERS
 
 app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
@@ -100,6 +106,8 @@ const deleteTour = (req, res) => { // PATCH request
 // app.patch('/api/v1/tours/:id', updateTour);
 // app.delete('/api/v1/tours/:id', deleteTour);
 
+// 3) ROUTES
+
 app
     .route('/api/v1/tours') // chaining the routes
     .get(getAllTours)
@@ -111,6 +119,8 @@ app
     .patch(updateTour)
     .delete(deleteTour);
 
+
+// 4) START SERVER
 
 const port = 3000;
 
