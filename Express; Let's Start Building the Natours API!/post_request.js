@@ -17,6 +17,30 @@ app.get('/api/v1/tours', (req, res) => {
     });
 });
 
+
+app.get('/api/v1/tours/:id', (req, res) => {
+    console.log(req.params); // req.params is an object with the parameters from the URL
+    const id = req.params.id * 1; // convert the id to a number
+    const tour = tours.find(el => el.id === req.params.id * 1); // find the tour with the id from the URL
+
+    if (id > tours.length) { // if the id is greater than the number of tours
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid ID'
+        });
+    }
+
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            tour
+        }
+    });
+});
+
+
+
 app.post('/api/v1/tours', (req, res) => {  // POST request
     // console.log(req.body); // req.body is undefined because we haven't parsed the body yet
 
