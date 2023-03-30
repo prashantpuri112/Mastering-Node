@@ -107,7 +107,7 @@ const getAllUsers = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
+const getUsers = (req, res) => {
     res.status(500).json({
         status: 'error',
         message: 'This route is not yet defined!'
@@ -156,19 +156,19 @@ tourRouter
     .delete(deleteTour);
 
 
-userRouter.route('/')
-    .get(/* A function that returns all the users. */
-        getAllUsers)
+userRouter
+    .route('/')
+    .get(getAllUsers)
     .post(createUser);
 
-
-userRouter.route('/:id')
-    .get(getUser)
+userRouter
+    .route('/:id')
+    .get(getUsers)
     .patch(updateUser)
     .delete(deleteUser);
 
 app.use('/api/v1/tours', tourRouter); // mount the router on a route
-app.use('/api/v1/tours', userRouter);
+app.use('/api/v1/users', userRouter);
 
 // 4) START SERVER
 
