@@ -5,8 +5,17 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const app = express();
 
+
+
 // 1) MIDDLEWARE
-app.use(morgan('tiny')); // middleware to log the requests in the console
+if (process.env.NODE_ENV === 'development') {  // if the environment is development, then use morgan
+    app.use(morgan('dev'));  // middleware to log the requests in the console
+}  // if the environment is production, then don't use morgan
+
+app.use(morgan('dev')); // middleware to log the requests in the console
+
+
+
 app.use(express.json()); // middleware to parse the body of the request
 
 app.use(express.static(`${__dirname}/public`)); // middleware to serve static files (html, css, js, etc.
