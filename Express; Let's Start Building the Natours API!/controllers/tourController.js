@@ -3,6 +3,17 @@ const fs = require('fs');
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`), 'utf-8'); // read the file and store it in a variable
 
+exports.checkID = (req, res, next, val) => { // middleware to check if the id is a number
+    console.log(`Tour id is: ${val}`);
+    if (req.params.id * 1 > tours.length) { // if the id is greater than the number of tours
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid ID'
+        });
+    }
+    next();
+};
+
 exports.getAllTours = (req, res) => {
     console.log(req.requestTime);
     res.status(200).json({
@@ -19,14 +30,6 @@ exports.getTour = (req, res) => {
     console.log(req.params); // req.params is an object with the parameters from the URL
     const id = req.params.id * 1; // convert the id to a number
     const tour = tours.find(el => el.id === req.params.id * 1); // find the tour with the id from the URL
-
-    if (id > tours.length) { // if the id is greater than the number of tours
-        return res.status(404).json({
-            status: 'fail',
-            message: 'Invalid ID'
-        });
-    }
-
 
     res.status(200).json({
         status: 'success',
@@ -57,12 +60,6 @@ exports.createTour = (req, res) => {  // POST request
 }
 
 exports.updateTour = (req, res) => { // PATCH request
-    if (req.params.id * 1 > tours.length) { // if the id is greater than the number of tours
-        return res.status(404).json({
-            status: 'fail',
-            message: 'Invalid ID'
-        });
-    }
 
     res.status(200).json({
         status: 'success',
@@ -73,13 +70,6 @@ exports.updateTour = (req, res) => { // PATCH request
 }
 
 exports.deleteTour = (req, res) => { // PATCH request
-    if (req.params.id * 1 > tours.length) { // if the id is greater than the number of tours
-        return res.status(404).json({
-            status: 'fail',
-            message: 'Invalid ID'
-        });
-    }
-
     res.status(204).json({
         status: 'success',
         data: null

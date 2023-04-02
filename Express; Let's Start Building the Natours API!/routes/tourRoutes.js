@@ -1,8 +1,9 @@
 const express = require('express'); // import express
 const tourController = require('./../controllers/tourController'); // import the tour controller
 
-
 const router = express.Router(); // create a new router
+
+router.param('id', tourController.checkID); // middleware to check if the id is a number
 
 router
     .route('/') // chaining the routes
