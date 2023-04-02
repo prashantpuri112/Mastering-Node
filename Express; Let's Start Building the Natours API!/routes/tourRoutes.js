@@ -5,10 +5,17 @@ const router = express.Router(); // create a new router
 
 router.param('id', tourController.checkID); // middleware to check if the id is a number
 
+// Create a checkBody middleware
+// Check if body contains the name and price property
+// If not, send back 400 (bad request)
+// Add it to the post handler stack
+
+
+
 router
     .route('/') // chaining the routes
     .get(tourController.getAllTours)
-    .post(tourController.createTour);
+    .post(tourController.checkBody, tourController.createTour);
 
 router
     .route('/:id')
